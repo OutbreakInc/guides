@@ -34,7 +34,7 @@ int sleepForInterval(int interval)
 int main()
 {
   // Configure the pin to control the LED.
-  // The LED is set to be off when voltage passes thru and takes a digital input.
+  // The LED lights up when the pin is driven low (digital 0)
   *IOConfigPIO1_10 = IOConfigPIO1_10_Function_PIO | IOConfigPIO1_10_PullUp | IOConfigPIO1_10_DigitalMode;
   *GPIO1Dir = LED;
 
