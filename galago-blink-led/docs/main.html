@@ -89,6 +89,10 @@ int turnLedOn()
   *GPIO1Data &amp;= ~LED;
 }
 
+int sleepForInterval(int interval)
+{
+  int sleepTime = 1000 * interval;
+
 </pre></div></div>
             
         </li>
@@ -100,12 +104,15 @@ int turnLedOn()
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>            
               
-<p>Simulates sleeping by running a no-op instruction on the chip:
-1000 no-ops take 1 ms to run.</p>
+<p>Perform a bunch of no-op instructions to simulate sleeping  </p>
 
             </div>
             
-            <div class="content"><div class="highlight"><pre>int sleepForMilliseconds(int ms)
+            <div class="content"><div class="highlight"><pre>  for(int i = 0; i &lt; sleepTime; i++)
+      __asm volatile(&quot;nop&quot;::);
+}
+
+int main()
 {
 </pre></div></div>
             
@@ -116,29 +123,6 @@ int turnLedOn()
             <div class="annotation">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>            
-              
-<p>The chip runs at 12MHz by default and a no-op instruction takes 1 clock cycle.</p>
-
-            </div>
-            
-            <div class="content"><div class="highlight"><pre>  int sleepTime = 12000 * ms;
-  
-  for(int i = 0; i &lt; sleepTime; i++)
-      __asm__(&quot;nop&quot;);
-}
-
-int main()
-{
-</pre></div></div>
-            
-        </li>
-        
-           
-        <li id="section-7">
-            <div class="annotation">
-              <div class="pilwrap">
-                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>            
               
 <p>Configure the pin to control the LED.
@@ -154,10 +138,10 @@ The LED is set to be off when voltage passes thru and takes a digital input.</p>
         </li>
         
            
-        <li id="section-8">
+        <li id="section-7">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>            
               
 <p>Main event loop.</p>
@@ -166,34 +150,33 @@ The LED is set to be off when voltage passes thru and takes a digital input.</p>
             
             <div class="content"><div class="highlight"><pre>  while(true)
   {
-
-    turnLedOn();        
-    sleepForMilliseconds(1000);
-
 </pre></div></div>
             
         </li>
         
            
-        <li id="section-9">
+        <li id="section-8">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>            
               
 <p>Continuously blink the LED in a &quot;heartbeat&quot; pattern.</p>
 
             </div>
             
-            <div class="content"><div class="highlight"><pre>    turnLedOff();
-    sleepForMilliseconds(100);
-    turnLedOn();
-    sleepForMilliseconds(100);
+            <div class="content"><div class="highlight"><pre>    turnLedOn();
+    sleepForInterval(175);
     turnLedOff();
-
-    sleepForMilliseconds(1000);
+    sleepForInterval(175);
+    turnLedOn();
+    sleepForInterval(175);
+    turnLedOff();
+    
+    sleepForInterval(1000);
   }
 }
+
 </pre></div></div>
             
         </li>

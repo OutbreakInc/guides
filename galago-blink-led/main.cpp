@@ -22,15 +22,13 @@ int turnLedOn()
   *GPIO1Data &= ~LED;
 }
 
-// Simulates sleeping by running a no-op instruction on the chip:
-// 1000 no-ops take 1 ms to run.
-int sleepForMilliseconds(int ms)
+int sleepForInterval(int interval)
 {
-  // The chip runs at 12MHz by default and a no-op instruction takes 1 clock cycle.
-  int sleepTime = 12000 * ms;
-  
+  int sleepTime = 1000 * interval;
+
+  // Perform a bunch of no-op instructions to simulate sleeping  
   for(int i = 0; i < sleepTime; i++)
-      __asm__("nop");
+      __asm volatile("nop"::);
 }
 
 int main()
@@ -43,17 +41,15 @@ int main()
   // Main event loop.
   while(true)
   {
-
-    turnLedOn();        
-    sleepForMilliseconds(1000);
-
     // Continuously blink the LED in a "heartbeat" pattern.
-    turnLedOff();
-    sleepForMilliseconds(100);
     turnLedOn();
-    sleepForMilliseconds(100);
+    sleepForInterval(175);
     turnLedOff();
-
-    sleepForMilliseconds(1000);
+    sleepForInterval(175);
+    turnLedOn();
+    sleepForInterval(175);
+    turnLedOff();
+    
+    sleepForInterval(1000);
   }
 }
