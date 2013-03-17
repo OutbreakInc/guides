@@ -2,7 +2,7 @@
 // ----------
 
 // Header files that contain type definitions for Galago's pins.
-#include "lpc13xx.h"
+#include "LPC13xx.h"
 #include "GalagoAPI.h"
 
 // Shortcut for accessing all the typedefs instead of the `LPC1300` namespace,
